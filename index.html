@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistical Analysis Calculator</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module" src="js/infoCards.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Statistical Analysis Calculator</h1>
+        <p>Analyze your data quickly and easily!</p>
+    </header>
+
+    <main>
+        <section id="input-section">
+            <h2>Input Data</h2>
+            <form id="data-form">
+                <label for="csv-file">Upload CSV File:</label>
+                <input type="file" id="csv-file" accept=".csv">
+                <p>OR</p>
+                <label for="manual-input">Enter Values (comma-separated):</label>
+                <textarea id="manual-input" rows="4" placeholder="e.g., 10, 20, 30, 40"></textarea>
+                <button type="button" id="analyze-button">Analyze</button>
+                <button type="reset" id="reset-button">Reset</button>
+            </form>
+        </section>
+
+        <section id="results-section">
+            <h2>Results</h2>
+            <div id="results-output">
+                <p id="mean-result" data-info="mean">Mean: <span>-</span></p>
+                <p id="median-result" data-info="median">Median: <span>-</span></p>
+                <p id="mode-result" data-info="mode">Mode: <span>-</span></p>
+                <p id="range-result" data-info="range">Range: <span>-</span></p>
+                <p id="stddev-result" data-info="stddev">Standard Deviation: <span>-</span></p>
+                <p id="variance-result" data-info="variance">Variance: <span>-</span></p>
+                <p id="iqr-result" data-info="iqr">IQR: <span>-</span></p>
+                <p id="percentile-result" data-info="percentile">75th Percentile: <span>-</span></p>
+                <p id="correlation-result" data-info="correlation">Correlation: <span>-</span></p>
+                <p id="skewness-result" data-info="skewness">Skewness: <span>-</span></p>
+                <p id="regression-equation" data-info="regression">Regression Equation: <span>-</span></p>
+                <div id="prediction-section">
+                    <input type="number" id="x-value" placeholder="Enter X value">
+                    <button id="predict-btn">Predict Y</button>
+                    <p>Predicted Y: <span id="predicted-y">-</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="percentile-calculator">
+            <h2>Percentile Calculator</h2>
+            <div class="percentile-input">
+                <label for="percentile-value">Enter Percentile (1-100):</label>
+                <input type="number" id="percentile-value" min="1" max="100" value="75">
+                <button type="button" id="calculate-percentile">Calculate Percentile</button>
+            </div>
+            <div class="percentile-results">
+                <p>Percentile Value: <span id="percentile-calc-result">-</span></p>
+            </div>
+        </section>
+
+        <section id="visualization-section">
+            <h2>Visualizations</h2>
+            <div class="chart-controls">
+                <select id="chart-type">
+                    <option value="histogram">Histogram</option>
+                    <option value="boxplot">Box Plot</option>
+                    <option value="scatter">Scatter Plot</option>
+                    <option value="pie">Pie Chart</option>
+                    <option value="dotplot">Dot Plot</option>
+                    <option value="regression">Regression Plot</option>
+                </select>
+            </div>
+            <canvas id="chart" width="400" height="200"></canvas>
+        </section>
+
+        <section class="test-container">
+            <h2>Statistical Tests</h2>
+            <select id="test-selector" class="test-selector">
+                <option value="">Select a Test</option>
+                <option value="chi-square">Chi-Square Test</option>
+                <option value="anova">ANOVA</option>
+                <option value="hypothesis">Hypothesis Testing</option>
+                <option value="confidence">Confidence Interval</option>
+                <option value="sample-size">Sample Size Calculator</option>
+                <option value="probability">Probability Calculator</option>
+            </select>
+
+            <div id="test-sections">
+                <!-- Move existing test sections here, add data-test attribute -->
+                <div id="chi-square-section" class="test-section" data-test="chi-square" data-info="chi-square">
+                    <h2>Chi-Square Test</h2>
+                    <div class="chi-square-input">
+                        <p>Enter contingency table data (rows separated by newlines, columns by commas):</p>
+                        <textarea id="chi-square-input" rows="4" placeholder="5, 10, 15&#10;20, 25, 30&#10;35, 40, 45"></textarea>
+                        <button type="button" id="calculate-chi-square">Calculate Chi-Square</button>
+                    </div>
+                    <div class="chi-square-results">
+                        <p>Chi-Square Statistic: <span id="chi-square-stat">-</span></p>
+                        <p>Degrees of Freedom: <span id="chi-square-df">-</span></p>
+                        <p>p-value: <span id="chi-square-p">-</span></p>
+                        <p>Significance: <span id="chi-square-significance">-</span></p>
+                        <div id="expected-frequencies">
+                            <h3>Expected Frequencies:</h3>
+                            <div id="expected-table"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="anova-section" class="test-section" data-test="anova" data-info="anova">
+                    <h2>ANOVA Calculator</h2>
+                    <div class="anova-input">
+                        <p>Enter groups of data (one group per line, values comma-separated):</p>
+                        <textarea id="anova-input" rows="4" placeholder="Group 1: 10, 20, 30&#10;Group 2: 15, 25, 35&#10;Group 3: 12, 22, 32"></textarea>
+                        <button type="button" id="calculate-anova">Calculate ANOVA</button>
+                    </div>
+                    <div class="anova-results">
+                        <p>F-statistic: <span id="f-stat">-</span></p>
+                        <p>p-value: <span id="p-value">-</span></p>
+                        <p>Between Groups SS: <span id="between-ss">-</span></p>
+                        <p>Within Groups SS: <span id="within-ss">-</span></p>
+                        <p>Total SS: <span id="total-ss">-</span></p>
+                        <p>Significance: <span id="significance">-</span></p>
+                    </div>
+                </div>
+
+                <div id="hypothesis-testing" class="test-section" data-test="hypothesis">
+                    <h2>Hypothesis Testing</h2>
+                    <div class="test-selection">
+                        <select id="test-type">
+                            <option value="z-test">Z-Test (Known Population SD)</option>
+                            <option value="t-test">T-Test (Unknown Population SD)</option>
+                        </select>
+                    </div>
+                    <div class="hypothesis-input">
+                        <div id="z-test-inputs">
+                            <label for="population-mean">Hypothesized Population Mean:</label>
+                            <input type="number" id="population-mean" step="any">
+                            <label for="population-sd">Population Standard Deviation:</label>
+                            <input type="number" id="population-sd" step="any" min="0">
+                        </div>
+                        <div id="t-test-inputs" style="display: none;">
+                            <label for="hypothesized-mean">Hypothesized Mean:</label>
+                            <input type="number" id="hypothesized-mean" step="any">
+                        </div>
+                        <button type="button" id="perform-test">Perform Test</button>
+                    </div>
+                    <div class="test-results">
+                        <h3>Test Results</h3>
+                        <p>Test Statistic: <span id="test-statistic">-</span></p>
+                        <p>P-value: <span id="test-p-value">-</span></p>
+                        <p>Sample Mean: <span id="test-sample-mean">-</span></p>
+                        <p>Standard Error: <span id="test-std-error">-</span></p>
+                        <p>Conclusion: <span id="test-conclusion">-</span></p>
+                    </div>
+                </div>
+
+                <div id="confidence-interval" class="test-section" data-test="confidence">
+                    <h2>Confidence Interval Calculator</h2>
+                    <div class="confidence-input">
+                        <label for="confidence-level">Confidence Level:</label>
+                        <select id="confidence-level">
+                            <option value="0.90">90%</option>
+                            <option value="0.95" selected>95%</option>
+                            <option value="0.99">99%</option>
+                        </select>
+                        <button type="button" id="calculate-ci">Calculate Interval</button>
+                    </div>
+                    <div class="confidence-results">
+                        <p>Lower Bound: <span id="ci-lower">-</span></p>
+                        <p>Upper Bound: <span id="ci-upper">-</span></p>
+                        <p>Margin of Error: <span id="ci-margin">-</span></p>
+                    </div>
+                </div>
+
+                <div id="sample-size" class="test-section" data-test="sample-size">
+                    <h2>Sample Size Calculator</h2>
+                    <div class="sample-size-input">
+                        <label for="margin-error">Desired Margin of Error:</label>
+                        <input type="number" id="margin-error" step="0.01" min="0">
+                        <label for="population-stddev">Estimated Population StdDev:</label>
+                        <input type="number" id="population-stddev" step="0.01" min="0">
+                        <button type="button" id="calculate-sample-size">Calculate Sample Size</button>
+                    </div>
+                    <div class="sample-size-result">
+                        <p>Required Sample Size: <span id="required-n">-</span></p>
+                    </div>
+                </div>
+
+                <div id="probability" class="test-section" data-test="probability">
+                    <h2>Probability Calculator</h2>
+                    <div class="probability-input">
+                        <label for="prob-value">Value:</label>
+                        <input type="number" id="prob-value" step="any">
+                        <label for="prob-mean">Population Mean:</label>
+                        <input type="number" id="prob-mean" step="any">
+                        <label for="prob-stddev">Population StdDev:</label>
+                        <input type="number" id="prob-stddev" step="any" min="0">
+                        <button type="button" id="calculate-probability">Calculate Probability</button>
+                    </div>
+                    <div class="probability-result">
+                        <p>Probability: <span id="probability-value">-</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Statistical Analysis Calculator. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="js/fileParser.js"></script>
+    <script type="module" src="js/stats.js"></script>
+    <script type="module" src="js/chart.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
